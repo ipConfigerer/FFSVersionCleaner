@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,7 @@ namespace FFSVersionCleaner
         // dass gelöschte Dateien in ein Versions-Verzeichnis weggeschrieben werden.
         // Diese Dateien bekommen dann ein gewisses Format:
         // *.DATEIENDUNG YYYY-MM-DD HH24MISS.DATEIENDUNG
-        // z.B. Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-20 000902.lnk
+        // z.B. Z:\Folder\SubFolder\ReadMe.txt 2017-12-20 000902.txt
         // Leider versioniert FreeFileSync ohne Grenzen.
         // Eine Outlookdatei ändert sich mit jedem Aufruf von Outlook. 
         // Hat diese Datei eine Größe von ca. 1,5GB muss man die Festplatte häufig manuell bereinigen, oder die Platte läuft über.
@@ -97,20 +97,20 @@ namespace FFSVersionCleaner
                     /* 
                     In der Schleife könnte folgendes eingelesen werden:
 
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-20 000902.lnk
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-20 000447.lnk
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-18 142506.lnk
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-11 190859.lnk
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-10 225912.lnk
-                    Z:\VersioningC\Tools\Multimedia\Mp3tag.lnk 2017-12-22 195550.lnk
-                    Z:\VersioningC\Tools\Multimedia\MakeMKV.lnk 2017-12-20 000447.lnk
-                    Z:\VersioningC\Tools\Multimedia\MakeMKV.lnk 2017-12-18 142506.lnk
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-20 000902.txt
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-20 000447.txt
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-18 142506.txt
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-11 190859.txt
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-10 225912.txt
+                    Z:\Folder\SubFolder2\SubSubFolder\File.exe 2017-12-22 195550.exe
+                    Z:\Folder\SubFolder2\SubSubFolder\ReadMe.txt 2017-12-08 131643.txt
+                    Z:\Folder\SubFolder2\SubSubFolder\ReadMe.txt 2017-12-07 124449.txt
 
                     Der allgemeine Dateiaufbau ist: *.DATEIENDUNG YYYY-MM-DD HH24MISS.DATEIENDUNG
-                    Ich muss nun die 3 neuesten Dateien stehen lassen und die älteren Versionen Löschen.
+                    Ich möchte nun die 3 neuesten Dateien stehen lassen und die älteren Versionen Löschen.
                     Im obigen Beispiel würden also die Dateien 
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-11 190859.lnk und 
-                    Z:\VersioningC\Tools\Shareware\JDownloader 2.lnk 2017-12-10 225912.lnk gelöscht werden...
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-11 190859.txt und 
+                    Z:\Folder\SubFolder\ReadMe.txt 2017-12-10 225912.txt gelöscht werden...
 
                     Idee:
                     Array der Größe 4
@@ -131,7 +131,7 @@ namespace FFSVersionCleaner
                     Wenn ja   --> lösche physikalisch die Datei aus [3]
                                   Lese die nächste Datei in [3] ein und gehe zu I)
                     */
-                    
+
                     if (nLoop > nAnzahl-1)
                     {
                         //hier jetzt in der Zeichenkette von rechts ausgehend nach einem . suchen
@@ -170,18 +170,12 @@ namespace FFSVersionCleaner
                                 saFileNames[nParLoop-1] = saFileNames[nParLoop];
                             }
                             saFileNames[nParLoop-1] = f.File;
-
-                            //saFileNames[0] = saFileNames[1];
-                            //saFileNames[1] = saFileNames[2];
-                            //saFileNames[2] = saFileNames[3];
-                            //saFileNames[3] = f.File;
                         }
                     }
                     else
                         saFileNames[nLoop] = f.File;
 
                     nLoop++;
-                    //Console.WriteLine("{0}\t", f.File);
                     
                 }
                 Console.WriteLine("{0} files found. {1} files deleted.", nLoop.ToString(), nDeleted.ToString() );
